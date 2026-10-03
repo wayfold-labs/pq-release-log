@@ -10,14 +10,14 @@
 
 No connection, signature, transaction, or wallet is requested. Production ignores `rpc` and `registry` URL overrides. It never auto-runs for a non-default owner/name, and warns prominently that a changed owner or name means someone else’s project.
 
-Registry links to fill after deployment: [registry](<REGISTRY_ADDRESS>), [deployment](<DEPLOY_TX>), [release 1](<PUBLISH_TX_1>), [release 2](<PUBLISH_TX_2>), and [verified source](<SOURCIFY_URL>).
+Live on Arc mainnet (chain 5042): [registry](https://explorer.arc.io/address/0x75622De31B62e29C04262777B31bddf6a542CE05) ([deployment](https://explorer.arc.io/tx/0x24558b1c1029f15fba80e957e1005cace167f4efe3882c941ffaadb8f7920c08), source verified on [Sourcify](https://repo.sourcify.dev/5042/0x75622De31B62e29C04262777B31bddf6a542CE05), exact match). [Release 1](https://explorer.arc.io/tx/0x1d9f47ed050df6a417752b3b097e058b919d4bfa94b10ca6c9fd31358ae99bf1) seals the live PayLink app (https://wayfold-labs.github.io/arc-miniapp/) in block 24074592.
 
 ## Independent verifier check
 
 The hosted verifier shares the PayLink GitHub account/origin and could lie if that account were compromised. Its reviewed digest is:
 
 ```text
-10323d93660859d362b7982f7af5597a97c7003c75a01e59696443db6bed34f9  docs/index.html
+1bb5f995e1486d5d5604ef87e7fe4ac5bdab5a8f5b6874126bf4799d69f09930  docs/index.html
 ```
 
 Use a saved copy after checking that digest, or verify without the hosted page:

@@ -21,7 +21,7 @@ from slhdsa import KeyPair, SecretKey, sha2_128s
 
 
 CONFIG = {
-    "registry": "<REGISTRY_ADDRESS>",  # Replace once, after the one-time deployment.
+    "registry": "0x75622De31B62e29C04262777B31bddf6a542CE05",  # Replace once, after the one-time deployment.
     "rpc": "https://rpc.mainnet.arc.io",
     "chain_id": 5042,
 }
@@ -344,8 +344,8 @@ def command_manifest(args: argparse.Namespace) -> None:
 
 def command_sign_register(args: argparse.Namespace) -> None:
     registry = args.registry
-    if registry == "<REGISTRY_ADDRESS>":
-        raise ValueError("registry is still <REGISTRY_ADDRESS>")
+    if registry == "0x75622De31B62e29C04262777B31bddf6a542CE05":
+        raise ValueError("registry is still 0x75622De31B62e29C04262777B31bddf6a542CE05")
     secret = load_key(args.key)
     key = project_key(args.owner, args.name)
     message = register_message(args.chain_id, registry, "0x" + key.hex(), args.owner, secret.pubkey.digest())
@@ -357,8 +357,8 @@ def command_sign_register(args: argparse.Namespace) -> None:
 
 def command_register_plan(args: argparse.Namespace) -> None:
     registry = args.registry
-    if registry == "<REGISTRY_ADDRESS>":
-        raise ValueError("registry is still <REGISTRY_ADDRESS>")
+    if registry == "0x75622De31B62e29C04262777B31bddf6a542CE05":
+        raise ValueError("registry is still 0x75622De31B62e29C04262777B31bddf6a542CE05")
     parse_address(registry)
     parse_address(args.owner)
     check_network(args.rpc, registry, args.chain_id)
@@ -383,8 +383,8 @@ def command_register_plan(args: argparse.Namespace) -> None:
 
 def command_publish_plan(args: argparse.Namespace) -> None:
     registry = args.registry
-    if registry == "<REGISTRY_ADDRESS>":
-        raise ValueError("registry is still <REGISTRY_ADDRESS>")
+    if registry == "0x75622De31B62e29C04262777B31bddf6a542CE05":
+        raise ValueError("registry is still 0x75622De31B62e29C04262777B31bddf6a542CE05")
     parse_address(registry)
     parse_address(args.owner)
     check_network(args.rpc, registry, args.chain_id)
@@ -431,8 +431,8 @@ def _fetch(url: str) -> bytes:
 
 def command_verify_site(args: argparse.Namespace) -> None:
     registry = args.registry
-    if registry == "<REGISTRY_ADDRESS>":
-        raise ValueError("registry is still <REGISTRY_ADDRESS>")
+    if registry == "0x75622De31B62e29C04262777B31bddf6a542CE05":
+        raise ValueError("registry is still 0x75622De31B62e29C04262777B31bddf6a542CE05")
     parse_address(registry)
     parse_address(args.owner)
     validate_name(args.name)

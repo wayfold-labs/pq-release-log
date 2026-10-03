@@ -2,7 +2,7 @@
 
 PQ Release Log is an admin-free, append-only Arc registry for authenticated static-site releases. An EOA submits transactions, while one offline SLH-DSA-SHA2-128s key is permanently bound to that owner and authenticates every project registration and release. Anyone can check a live site with the wallet-free verifier at <https://wayfold-labs.github.io/pq-release-log/> or with the independent CLI.
 
-The registry is not deployed yet: [registry](<REGISTRY_ADDRESS>), [deployment](<DEPLOY_TX>), [Sourcify](<SOURCIFY_URL>), [release 1](<PUBLISH_TX_1>), and [release 2](<PUBLISH_TX_2>). After the one-time deployment, replace only `CONFIG.registry` in `docs/index.html` and `CONFIG["registry"]` in `cli/pqrl.py`, then update the verifier hash below.
+Live on Arc mainnet (chain 5042): [registry](https://explorer.arc.io/address/0x75622De31B62e29C04262777B31bddf6a542CE05) ([deployment](https://explorer.arc.io/tx/0x24558b1c1029f15fba80e957e1005cace167f4efe3882c941ffaadb8f7920c08), source verified on [Sourcify](https://repo.sourcify.dev/5042/0x75622De31B62e29C04262777B31bddf6a542CE05), exact match). [Release 1](https://explorer.arc.io/tx/0x1d9f47ed050df6a417752b3b097e058b919d4bfa94b10ca6c9fd31358ae99bf1) seals the live PayLink app (https://wayfold-labs.github.io/arc-miniapp/) in block 24074592.
 
 ## What is authenticated
 
@@ -92,7 +92,7 @@ The CLI provides the mitigation for a compromised hosted verifier. It reads `pro
 The SHA-256 of the reviewed self-contained verifier is:
 
 ```text
-10323d93660859d362b7982f7af5597a97c7003c75a01e59696443db6bed34f9  docs/index.html
+1bb5f995e1486d5d5604ef87e7fe4ac5bdab5a8f5b6874126bf4799d69f09930  docs/index.html
 ```
 
 A saved copy works from `file://` after the real registry is inserted. Compare the saved bytes with this digest before trusting its verdict.
