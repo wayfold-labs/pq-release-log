@@ -1,0 +1,1942 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Create EURC and USDC payment request links on Arc.">
+  <title>PayLink on Arx</title>
+  <style>
+:root {
+  color-scheme: light dark;
+  --bg: #f4f6fa;
+  --surface: #fff;
+  --text: #162033;
+  --muted: #626d80;
+  --border: #d7dde8;
+  --primary: #1554ad;
+  --primary2: #0f438e;
+  --primaryText: #fff;
+  --soft: #eef3fa;
+  --danger: #a32323;
+  --dangerBg: #fff0f0;
+  --success: #116b39;
+  --successBg: #ebf9f0;
+  --notice: #705800;
+  --noticeBg: #fff8dc;
+  --focus: #4b8ef7;
+  --shadow: 0 14px 40px rgba(31, 42, 68, .08)
+}
+
+@media(prefers-color-scheme:dark) {
+  :root {
+    --bg: #0f141d;
+    --surface: #171e29;
+    --text: #eef2f8;
+    --muted: #adb7c8;
+    --border: #344052;
+    --primary: #7babff;
+    --primary2: #9fc2ff;
+    --primaryText: #08101e;
+    --soft: #252e3c;
+    --danger: #ff9b9b;
+    --dangerBg: #391f24;
+    --success: #8dddac;
+    --successBg: #173428;
+    --notice: #efd371;
+    --noticeBg: #352f19;
+    --shadow: none
+  }
+}
+
+* {
+  box-sizing: border-box
+}
+
+body {
+  margin: 0;
+  min-width: 280px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.5
+}
+
+a {
+  color: var(--primary);
+  overflow-wrap: anywhere
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit
+}
+
+button,
+input,
+textarea,
+select,
+a {
+  border-radius: .48rem
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px
+}
+
+.page {
+  width: min(100% - 2rem, 48rem);
+  margin: auto
+}
+
+header {
+  padding: 2.3rem 0 1.35rem;
+  position: relative
+}
+
+h1,
+h2 {
+  line-height: 1.18
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 9vw, 3rem);
+  letter-spacing: -.045em
+}
+
+header p {
+  max-width: 40rem;
+  margin: .65rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem
+}
+
+.language {
+  position: absolute;
+  right: 0;
+  top: 2.5rem;
+  width: auto;
+  padding: .4rem .6rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text)
+}
+
+main {
+  display: grid;
+  gap: 1rem
+}
+
+.card {
+  padding: 1.3rem;
+  border: 1px solid var(--border);
+  border-radius: .85rem;
+  background: var(--surface);
+  box-shadow: var(--shadow)
+}
+
+.card h2 {
+  margin: 0 0 1rem;
+  font-size: 1.3rem
+}
+
+.grid {
+  display: grid;
+  gap: 1rem
+}
+
+@media(min-width:38rem) {
+  .grid.two {
+    grid-template-columns: 1fr 1fr
+  }
+
+  .result-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end
+  }
+
+  .receipt-grid {
+    grid-template-columns: 1fr auto
+  }
+}
+
+.field {
+  margin-bottom: 1rem
+}
+
+label,
+.label {
+  display: block;
+  margin-bottom: .35rem;
+  font-weight: 650
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: .72rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text)
+}
+
+textarea {
+  min-height: 5.5rem;
+  resize: vertical
+}
+
+input[readonly] {
+  background: var(--soft)
+}
+
+.help,
+.counter,
+.muted {
+  color: var(--muted);
+  font-size: .9rem
+}
+
+.counter {
+  margin: .3rem 0 0;
+  text-align: right
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  align-items: center
+}
+
+button,
+.button-link {
+  display: inline-flex;
+  min-height: 2.7rem;
+  align-items: center;
+  justify-content: center;
+  padding: .62rem .95rem;
+  border: 1px solid transparent;
+  background: var(--primary);
+  color: var(--primaryText);
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none
+}
+
+button:hover,
+.button-link:hover {
+  background: var(--primary2)
+}
+
+button.secondary,
+.button-link.secondary {
+  border-color: var(--border);
+  background: var(--soft);
+  color: var(--text)
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: .55
+}
+
+.result-row,
+.receipt-grid {
+  display: grid;
+  gap: .65rem
+}
+
+.message {
+  margin: 1rem 0 0;
+  padding: .82rem .95rem;
+  border: 1px solid var(--border);
+  border-radius: .55rem;
+  overflow-wrap: anywhere
+}
+
+.message:empty {
+  display: none
+}
+
+.message.info {
+  background: var(--soft)
+}
+
+.message.error {
+  color: var(--danger);
+  background: var(--dangerBg)
+}
+
+.message.success {
+  color: var(--success);
+  background: var(--successBg)
+}
+
+.message.notice {
+  color: var(--notice);
+  background: var(--noticeBg)
+}
+
+.details {
+  display: grid;
+  gap: .85rem;
+  margin: 0
+}
+
+.details dt {
+  margin-bottom: .1rem;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: .04em
+}
+
+.details dd {
+  margin: 0;
+  overflow-wrap: anywhere
+}
+
+.amount {
+  font-size: 1.7rem;
+  font-weight: 780
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: .92rem;
+  white-space: pre-line
+}
+
+.qr-wrap {
+  display: grid;
+  place-items: center;
+  margin-top: 1rem
+}
+
+.qr {
+  width: min(100%, 280px);
+  height: auto;
+  padding: 10px;
+  background: #fff;
+  border-radius: .4rem;
+  image-rendering: pixelated
+}
+
+.warning {
+  margin: 1rem 0 0;
+  padding-left: .9rem;
+  border-left: 4px solid var(--notice);
+  font-weight: 650
+}
+
+ol {
+  margin-bottom: 0;
+  padding-left: 1.35rem
+}
+
+li+li {
+  margin-top: .4rem
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+  padding: 1.5rem 0 2.5rem;
+  color: var(--muted);
+  font-size: .88rem
+}
+
+[hidden] {
+  display: none !important
+}
+    body[data-tampered="true"] main,body[data-tampered="true"] header,body[data-tampered="true"] footer{pointer-events:none;opacity:.55;filter:grayscale(1)}
+  </style>
+</head>
+<body data-tampered="true">
+  <div role="alert" style="position:sticky;top:0;z-index:99999;padding:18px;text-align:center;background:#8b0000;color:#fff;font:900 20px/1.2 system-ui,sans-serif;border-bottom:4px solid #fff">TAMPERED DEMO — do not use · DEMO MANIPULADA — no usar</div>
+<div class="page">
+  <header>
+    <h1>PayLink <span class="muted">on Arc</span></h1>
+    <p data-i18n="tagline">Request euros or dollars with a link. One wallet transaction, instant confirmation.</p>
+    <select id="language" class="language" aria-label="Language">
+      <option value="en">EN</option>
+      <option value="es">ES</option>
+    </select>
+  </header>
+  <main>
+    <div id="test-banner" class="message notice" hidden data-i18n="testBanner">Test network — no real value</div>
+    <section id="create-section" class="card" hidden>
+      <h2 data-i18n="createTitle">Create a payment request</h2>
+      <form id="create-form" novalidate>
+        <div class="grid two">
+          <div class="field">
+            <label for="network" data-i18n="network">Network</label>
+            <select id="network">
+              <option value="mainnet">Arc Mainnet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="currency" data-i18n="currency">Currency</label>
+            <select id="currency">
+              <option value="USDC">USDC ($)</option>
+              <option value="EURC">EURC (€)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="recipient" data-i18n="recipient">Recipient address</label>
+          <input id="recipient" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="0x…" required>
+          <div class="help" data-i18n="recipientHelp">The Arc address that receives the full payment.</div>
+        </div>
+        <div class="field">
+          <label for="amount" id="amount-label">Amount in USDC</label>
+          <input id="amount" inputmode="decimal" autocomplete="off" placeholder="125.00" required>
+          <div class="help" data-i18n="amountHelp">Positive amount, with at most 6 decimal places.</div>
+          <div id="amount-preview" class="help" aria-live="polite"></div>
+        </div>
+        <div class="field">
+          <label for="reference">
+            <span data-i18n="reference">Reference</span>
+            <span class="muted" data-i18n="optional">(optional)</span>
+          </label>
+          <textarea id="reference" placeholder="INV-2026-001" aria-describedby="ref-counter"></textarea>
+          <p id="ref-counter" class="counter">0 / 140 UTF-8 bytes</p>
+        </div>
+        <button type="submit" data-i18n="createButton">Create link</button>
+        <div id="create-status" class="message" role="status"></div>
+      </form>
+      <div id="link-result" hidden>
+        <div class="result-row">
+          <div>
+            <label for="generated-link" data-i18n="requestLink">Payment request link</label>
+            <input id="generated-link" readonly>
+          </div>
+          <button id="copy-button" type="button" class="secondary" data-i18n="copy">Copy</button>
+        </div>
+        <div class="actions" style="margin-top:.75rem">
+          <a id="open-request" class="button-link" href="#" data-i18n="openRequest">Open request</a>
+        </div>
+        <div class="qr-wrap">
+          <canvas id="qr" class="qr" width="280" height="280" aria-label="QR code"></canvas>
+          <div id="qr-status" class="help"></div>
+        </div>
+        <div id="copy-status" class="message" role="status"></div>
+      </div>
+    </section>
+    <section id="request-section" class="card" hidden>
+      <h2 data-i18n="requestTitle">Payment request</h2>
+      <div id="request-content" hidden>
+        <dl class="details">
+          <div><dt data-i18n="amount">Amount</dt><dd id="request-amount" class="amount"></dd></div>
+          <div><dt data-i18n="recipient">Recipient</dt><dd id="request-recipient" class="mono"></dd></div>
+          <div><dt data-i18n="reference">Reference</dt><dd id="request-reference"></dd></div>
+          <div><dt data-i18n="network">Network</dt><dd id="request-network"></dd></div>
+        </dl>
+        <p class="warning" data-i18n="recipientWarning">Check this address with whoever sent you the link. Payment links are not signed.</p>
+        <p class="warning" data-i18n="gasNote">Gas is paid in USDC. A EURC payer needs a few cents of USDC for gas.</p>
+        <div id="deployment-notice" class="message notice" hidden></div>
+        <div id="wallet-notice" class="message notice" hidden></div>
+        <div class="actions" style="margin-top:1.15rem">
+          <button id="pay-button" type="button" disabled data-i18n="pay">Pay with wallet</button>
+          <button id="direct-button" type="button" class="secondary" hidden disabled data-i18n="payDirect">Send directly</button>
+          <button id="status-button" type="button" class="secondary" data-i18n="check">Check status</button>
+        </div>
+        <div id="payment-status" class="message" role="status"></div>
+        <div id="chain-status" class="message" role="status"></div>
+        <div id="receipt-actions" class="actions" style="margin-top:1rem" hidden>
+          <button id="csv-button" class="secondary" type="button" data-i18n="csv">Download CSV receipt</button>
+          <button id="json-button" class="secondary" type="button" data-i18n="json">Download JSON receipt</button>
+        </div>
+      </div>
+      <div id="invalid-request" hidden>
+        <div id="invalid-message" class="message error" role="alert"></div>
+        <div class="actions" style="margin-top:1rem">
+          <a id="create-link" class="button-link secondary" href="./" data-i18n="createAnother">Create a request</a>
+        </div>
+      </div>
+    </section>
+    <section id="debug-section" class="card" hidden>
+      <h2>Self-test</h2>
+      <div id="debug-results" class="message mono"></div>
+    </section>
+    <section class="card">
+      <h2 data-i18n="howTitle">How it works</h2>
+      <ol>
+        <li data-i18n="how1">Create a EURC or USDC request and share its link.</li>
+        <li data-i18n="how2">The payer signs a one-hour token authorization, then sends one transaction.</li>
+        <li data-i18n="how3">Anyone with the link can verify the exact request and download a receipt.</li>
+      </ol>
+      <p class="warning" data-i18n="finalWarning">
+        Blockchain payments are final. Check the address and request before paying.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <a id="repo-link" href="https://github.com/wayfold-labs/arc-miniapp">Open source</a>
+    <a id="contract-link" href="#"></a>
+    <span data-i18n="disclaimer">Not affiliated with Circle or Arc.</span>
+  </footer>
+</div>
+<script>
+"use strict";
+// Deployment addresses are intentionally placeholders until deployment.
+const CONFIG = {
+  mainnet: {
+    chainId: 5042,
+    chainIdHex: "0x13b2",
+    rpc: "https://rpc.mainnet.arc.io",
+    explorer: "https://explorer.arc.io",
+    name: "Arc Mainnet",
+    payLink: "0x38DC3E2eD1bE44552f699b2026e542E306A7eE3A",
+    memo: "0x5294E9927c3306DcBaDb03fe70b92e01cCede505",
+    tokens: {
+      USDC: "0x3600000000000000000000000000000000000000",
+      EURC: "0xbEf5f6d51CB62b58e6A8f77868681825C6fe21c1"
+    }
+  },
+  testnet: {
+    chainId: 5042002,
+    chainIdHex: "0x4cef52",
+    rpc: "https://rpc.testnet.arc.io",
+    explorer: "https://explorer.testnet.arc.io",
+    name: "Arc Testnet",
+    payLink: "0x0000000000000000000000000000000000000000",
+    memo: "0x5294E9927c3306DcBaDb03fe70b92e01cCede505",
+    tokens: {
+      USDC: "0x3600000000000000000000000000000000000000",
+      EURC: "0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a"
+    }
+  }
+};
+const T = {
+  en: {
+    tagline: "Request euros or dollars with a link. One wallet transaction, instant confirmation.",
+    createTitle: "Create a payment request",
+    network: "Network",
+    currency: "Currency",
+    recipient: "Recipient address",
+    recipientHelp: "The Arc address that receives the full payment.",
+    recipientWarning: "Check this address with whoever sent you the link. Payment links are not signed.",
+    amount: "Amount",
+    amountHelp: "Positive amount, with at most 6 decimal places.",
+    reference: "Reference",
+    optional: "(optional)",
+    createButton: "Create link",
+    requestLink: "Payment request link",
+    copy: "Copy",
+    openRequest: "Open request",
+    requestTitle: "Payment request",
+    gasNote: "Gas is paid in USDC. A EURC payer needs a few cents of USDC for gas.",
+    pay: "Pay with wallet",
+    payDirect: "Send directly",
+    check: "Check status",
+    csv: "Download CSV receipt",
+    json: "Download JSON receipt",
+    createAnother: "Create a request",
+    howTitle: "How it works",
+    how1: "Create a EURC or USDC request and share its link.",
+    how2: "The payer signs a one-hour token authorization, then sends one transaction.",
+    how3: "Anyone with the link can verify the exact request and download a receipt.",
+    finalWarning: "Blockchain payments are final. Check the address and request before paying.",
+    disclaimer: "Not affiliated with Circle or Arc.",
+    noRef: "No reference",
+    notDeployed: "Contract not deployed on this network yet.",
+    testBanner: "Test network — no real value",
+    invalidId: "This payment request has an invalid ID.",
+    invalidAddress: "This payment request has an invalid recipient address.",
+    invalidAmount: "This payment request has an invalid amount.",
+    noThousands: "Enter the amount without thousands separators.",
+    interpretedAmount: "Interpreted amount: {amount}",
+    unsupportedNetwork: "This request is for a network this page does not support.",
+    invalidCurrency: "This payment request has an invalid currency.",
+    invalidRef: "The reference exceeds 140 UTF-8 bytes.",
+    created: "Payment request created.",
+    copied: "Link copied.",
+    copyManual: "Automatic copying was unavailable. The link is selected; copy it manually.",
+    checking: "Checking the blockchain…",
+    unpaid: "Not paid yet.",
+    paid: "Paid",
+    alreadyPaid: "This request is already paid.",
+    statePaid: "Paid (proven by contract state; transaction details unavailable)",
+    payer: "Payer",
+    block: "Block",
+    time: "Time",
+    viewTx: "View transaction",
+    viewBlock: "View block",
+    unavailable: "Status is unavailable until the contract is deployed.",
+    connect: "Connecting to your wallet…",
+    tokenCheck: "Checking the token and preparing the authorization…",
+    sign: "Sign the one-hour payment authorization in your wallet…",
+    confirm: "Confirm the single transaction in your wallet…",
+    submitted: "Transaction submitted.",
+    confirmed: "Transaction confirmed and payment verified.",
+    failed: "The transaction failed on the blockchain.",
+    completedElsewhere: "Paid — completed by another submission.",
+    receiptTimeout: "No transaction receipt was found after 2 minutes. Check the transaction in the explorer.",
+    noMatch: "Transaction confirmed, but no matching payment was found.",
+    walletNeeded: "An injected EIP-1193 wallet is needed.",
+    rejected: "The request was rejected in the wallet.",
+    memoFailed: "Arc Memo wrapping failed. You can send the same authorized payment directly to PayLink.",
+    smartWalletDirect: "This smart-contract wallet must pay PayLink directly because Arc Memo only accepts transactions from EOAs.",
+    directFailed: "The direct payment simulation also failed:",
+    contractMismatch: "PayLink is missing or its configured token addresses do not match this request.",
+    domainMismatch: "The token's EIP-712 domain does not match its on-chain DOMAIN_SEPARATOR.",
+    qrLong: "This link is too long for a version 10 QR code; copy it instead.",
+    receipt: "Receipt downloaded."
+  },
+  es: {
+    tagline: "Solicita euros o dólares con un enlace. Una transacción y confirmación inmediata.",
+    createTitle: "Crear una solicitud de pago",
+    network: "Red",
+    currency: "Moneda",
+    recipient: "Dirección del destinatario",
+    recipientHelp: "La dirección de Arc que recibirá el pago completo.",
+    recipientWarning: "Comprueba esta dirección con quien te envió el enlace. Los enlaces de pago no están firmados.",
+    amount: "Importe",
+    amountHelp: "Importe positivo, con un máximo de 6 decimales.",
+    reference: "Referencia",
+    optional: "(opcional)",
+    createButton: "Crear enlace",
+    requestLink: "Enlace de solicitud de pago",
+    copy: "Copiar",
+    openRequest: "Abrir solicitud",
+    requestTitle: "Solicitud de pago",
+    gasNote: "El gas se paga en USDC. Quien pague en EURC necesita unos céntimos de USDC para el gas.",
+    pay: "Pagar con cartera",
+    payDirect: "Enviar directamente",
+    check: "Comprobar estado",
+    csv: "Descargar recibo CSV",
+    json: "Descargar recibo JSON",
+    createAnother: "Crear una solicitud",
+    howTitle: "Cómo funciona",
+    how1: "Crea una solicitud en EURC o USDC y comparte el enlace.",
+    how2: "El pagador firma una autorización de una hora y envía una sola transacción.",
+    how3: "Cualquiera con el enlace puede verificar la solicitud exacta y descargar un recibo.",
+    finalWarning: "Los pagos en blockchain son definitivos. Comprueba la dirección y la solicitud.",
+    disclaimer: "Sin afiliación con Circle ni Arc.",
+    noRef: "Sin referencia",
+    notDeployed: "El contrato aún no está desplegado en esta red.",
+    testBanner: "Red de pruebas — sin valor real",
+    invalidId: "El identificador de la solicitud no es válido.",
+    invalidAddress: "La dirección del destinatario no es válida.",
+    invalidAmount: "El importe de la solicitud no es válido.",
+    noThousands: "Introduce el importe sin separadores de miles.",
+    interpretedAmount: "Importe interpretado: {amount}",
+    unsupportedNetwork: "Esta solicitud corresponde a una red que esta página no admite.",
+    invalidCurrency: "La moneda de la solicitud no es válida.",
+    invalidRef: "La referencia supera los 140 bytes UTF-8.",
+    created: "Solicitud de pago creada.",
+    copied: "Enlace copiado.",
+    copyManual: "No se pudo copiar automáticamente. El enlace está seleccionado; cópialo manualmente.",
+    checking: "Consultando la blockchain…",
+    unpaid: "Aún no pagado.",
+    paid: "Pagado",
+    alreadyPaid: "Esta solicitud ya está pagada.",
+    statePaid: "Pagado (demostrado por el estado del contrato; detalles de la transacción no disponibles)",
+    payer: "Pagador",
+    block: "Bloque",
+    time: "Hora",
+    viewTx: "Ver transacción",
+    viewBlock: "Ver bloque",
+    unavailable: "El estado no estará disponible hasta desplegar el contrato.",
+    connect: "Conectando con tu cartera…",
+    tokenCheck: "Comprobando el token y preparando la autorización…",
+    sign: "Firma en tu cartera la autorización de pago válida por una hora…",
+    confirm: "Confirma la única transacción en tu cartera…",
+    submitted: "Transacción enviada.",
+    confirmed: "Transacción confirmada y pago verificado.",
+    failed: "La transacción ha fallado en la blockchain.",
+    completedElsewhere: "Pagado — completado por otro envío.",
+    receiptTimeout: "No se encontró el recibo de la transacción tras 2 minutos. Comprueba la transacción en el explorador.",
+    noMatch: "La transacción se confirmó, pero no se encontró el pago.",
+    walletNeeded: "Se necesita una cartera EIP-1193 inyectada.",
+    rejected: "La solicitud se rechazó en la cartera.",
+    memoFailed: "Falló el envoltorio de Arc Memo. Puedes enviar el mismo pago autorizado directamente a PayLink.",
+    smartWalletDirect: "Esta cartera de contrato inteligente debe pagar directamente a PayLink porque Arc Memo solo acepta transacciones de EOA.",
+    directFailed: "La simulación del pago directo también falló:",
+    contractMismatch: "PayLink no existe o sus direcciones de token configuradas no coinciden con esta solicitud.",
+    domainMismatch: "El dominio EIP-712 del token no coincide con DOMAIN_SEPARATOR en cadena.",
+    qrLong: "El enlace es demasiado largo para un QR versión 10; cópialo.",
+    receipt: "Recibo descargado."
+  }
+};
+const E = new TextEncoder(),
+  D = new TextDecoder("utf-8", {
+    fatal: true
+  }),
+  ZERO = "0x" + "0".repeat(40);
+const SEL = {
+  pay: "9030ea09",
+  payBytes: "b7fd0945",
+  paid: "969d7b90",
+  memo: "c3b2c4f8",
+  name: "06fdde03",
+  version: "54fd4d50",
+  domain: "3644e515",
+  usdc: "89a30271",
+  eurc: "aabfa37d",
+  receiveBytes: "88b7ab63"
+};
+const PAID_TOPIC = "0xe5c6828a8317f19aa46564dedf37db443786f258439d044102ae7df6dec98f26";
+const $ = id => document.getElementById(id),
+  params = new URLSearchParams(location.search);
+let lang = (navigator.language || "en").toLowerCase().startsWith("es") ? "es" : "en",
+  request = null,
+  receipt = null,
+  pending = null,
+  pollId = 0,
+  paymentInFlight = false,
+  requestPaid = false;
+const tr = k => T[lang][k] || T.en[k] || k;
+
+function translate() {
+  document.documentElement.lang = lang;
+  $("language").value = lang;
+  document.querySelectorAll("[data-i18n]").forEach(x => x.textContent = tr(x.dataset.i18n));
+  updateAmountLabel();
+  if (!$("wallet-notice").hidden) $("wallet-notice").textContent = tr("smartWalletDirect");
+  if (request) renderRequest();
+}
+
+function msg(el, text, kind) {
+  el.textContent = text;
+  el.className = "message" + (kind ? " " + kind : "");
+}
+
+function hex(bytes) {
+  return Array.from(bytes, b => b.toString(16).padStart(2, "0")).join("")
+}
+
+function bytes(h) {
+  h = h.replace(/^0x/, "");
+  if (h.length % 2 || !/^[0-9a-f]*$/i.test(h)) throw Error("Invalid hex");
+  return Uint8Array.from(h.match(/../g) || [], x => parseInt(x, 16))
+}
+
+function concat(...xs) {
+  const n = xs.reduce((a, x) => a + x.length, 0),
+    r = new Uint8Array(n);
+  let p = 0;
+  for (const x of xs) {
+    r.set(x, p);
+    p += x.length
+  }
+  return r
+}
+
+function word(v) {
+  let h = typeof v === "string" && v.startsWith("0x") ? v.slice(2) : BigInt(v).toString(16);
+  if (h.length > 64) throw Error("ABI value too large");
+  return h.padStart(64, "0")
+}
+
+function addressWord(a) {
+  if (!isAddress(a)) throw Error("Invalid address");
+  return a.slice(2).toLowerCase().padStart(64, "0")
+}
+
+function dynamicBytes(value) {
+  const b = value instanceof Uint8Array ? value : E.encode(value),
+    h = hex(b);
+  return word(b.length) + h.padEnd(Math.ceil(h.length / 64) * 64, "0")
+}
+
+function isAddress(x) {
+  if (!/^0x[0-9a-f]{40}$/i.test(x)) return false;
+  const body = x.slice(2);
+  if (body === body.toLowerCase() || body === body.toUpperCase()) return true;
+  const hash = hex(keccak(E.encode(body.toLowerCase())));
+  for (let i = 0; i < 40; i++) {
+    if (/[a-f]/i.test(body[i]) && (parseInt(hash[i], 16) >= 8) !== (body[i] === body[i].toUpperCase())) return false
+  }
+  return true
+}
+
+function isNonZero(x) {
+  return isAddress(x) && x.toLowerCase() !== ZERO
+}
+
+function isId(x) {
+  return /^0x[0-9a-f]{64}$/i.test(x)
+}
+
+function parseAmount(s) {
+  if (typeof s !== "string") throw Error(tr("invalidAmount"));
+  s = s.replace(",", ".");
+  if (!/^(?:0|[1-9]\d*)(?:\.\d{1,6})?$/.test(s)) throw Error(tr("invalidAmount"));
+  const [a, b = ""] = s.split("."), v = BigInt(a) * 1000000n + BigInt(b.padEnd(6, "0"));
+  if (v <= 0n || v > 1000000000000000n) throw Error(tr("invalidAmount"));
+  return v
+}
+
+function parseCreateAmount(s) {
+  if (/^[1-9]\d{0,2}[.,]\d{3}$/.test(s)) throw Error(tr("noThousands"));
+  return parseAmount(s)
+}
+
+function createAmountRejected(s) {
+  try {
+    parseCreateAmount(s);
+    return false
+  } catch (e) {
+    return true
+  }
+}
+
+function normalized(s) {
+  s = s.replace(",", ".");
+  const [a, b = ""] = s.split("."), f = b.replace(/0+$/, "");
+  return BigInt(a).toString() + (f ? "." + f : "")
+}
+
+function amountText(v, c) {
+  const whole = v / 1000000n,
+    rawFrac = (v % 1000000n).toString().padStart(6, "0").replace(/0+$/, ""),
+    frac = rawFrac.padEnd(2, "0"),
+    thousands = lang === "es" ? "." : ",",
+    decimal = lang === "es" ? "," : ".",
+    grouped = whole.toString().replace(/\B(?=(\d{3})+(?!\d))/g, thousands),
+    value = grouped + decimal + frac;
+  return c === "EURC" && lang === "es" ? value + " €" : (c === "EURC" ? "€" : "$") + value
+}
+
+function invalidRecipient(to, net) {
+  if (!isNonZero(to)) return true;
+  const value = to.toLowerCase();
+  return value === net.payLink.toLowerCase() || Object.values(net.tokens).some(token => value === token.toLowerCase())
+}
+
+function utf8Length(s) {
+  return E.encode(s).length
+}
+
+function quantity(v) {
+  return "0x" + BigInt(v).toString(16)
+}
+
+function randomId() {
+  const b = new Uint8Array(32);
+  crypto.getRandomValues(b);
+  return "0x" + hex(b)
+}
+
+// Keccak-256, used for exact-request nonces and EIP-712 domain checks.
+const RC = [1n, 0x8082n, 0x800000000000808an, 0x8000000080008000n, 0x808bn, 0x80000001n, 0x8000000080008081n,
+  0x8000000000008009n, 0x8an, 0x88n, 0x80008009n, 0x8000000an, 0x8000808bn, 0x800000000000008bn, 0x8000000000008089n,
+  0x8000000000008003n, 0x8000000000008002n, 0x8000000000000080n, 0x800an, 0x800000008000000an, 0x8000000080008081n,
+  0x8000000000008080n, 0x80000001n, 0x8000000080008008n
+];
+const ROT = [0, 1, 62, 28, 27, 36, 44, 6, 55, 20, 3, 10, 43, 25, 39, 41, 45, 15, 21, 8, 18, 2, 61, 56, 14],
+  MASK = (1n << 64n) - 1n;
+
+function rol(x, n) {
+  n = BigInt(n);
+  return n ? ((x << n) | (x >> (64n - n))) & MASK : x
+}
+
+function keccak(data) {
+  const rate = 136,
+    pad = rate - (data.length % rate),
+    p = new Uint8Array(data.length + pad);
+  p.set(data);
+  p[data.length] = 1;
+  p[p.length - 1] |= 128;
+  const a = Array(25).fill(0n);
+  for (let o = 0; o < p.length; o += rate) {
+    for (let i = 0; i < rate; i++) a[i >> 3] ^= BigInt(p[o + i]) << BigInt((i & 7) * 8);
+    for (let rnd = 0; rnd < 24; rnd++) {
+      const c = Array(5),
+        d = Array(5),
+        b = Array(25);
+      for (let x = 0; x < 5; x++) c[x] = a[x] ^ a[x + 5] ^ a[x + 10] ^ a[x + 15] ^ a[x + 20];
+      for (let x = 0; x < 5; x++) d[x] = c[(x + 4) % 5] ^ rol(c[(x + 1) % 5], 1);
+      for (let i = 0; i < 25; i++) a[i] ^= d[i % 5];
+      for (let x = 0; x < 5; x++)
+        for (let y = 0; y < 5; y++) b[y + 5 * ((2 * x + 3 * y) % 5)] = rol(a[x + 5 * y], ROT[x + 5 * y]);
+      for (let x = 0; x < 5; x++)
+        for (let y = 0; y < 5; y++) a[x + 5 * y] = b[x + 5 * y] ^ ((~b[(x + 1) % 5 + 5 * y]) & b[(x + 2) % 5 + 5 * y]);
+      a[0] ^= RC[rnd]
+    }
+  }
+  const out = new Uint8Array(32);
+  for (let i = 0; i < 32; i++) out[i] = Number((a[i >> 3] >> BigInt((i & 7) * 8)) & 255n);
+  return out
+}
+const kh = x => "0x" + hex(keccak(x instanceof Uint8Array ? x : E.encode(x)));
+
+function requestKey(q) {
+  const ref = E.encode(q.ref);
+  // Solidity ABI encoding includes the dynamic string offset and byte length.
+  return kh(bytes(word(q.id) + addressWord(q.token) + addressWord(q.to) + word(q.units) + word(160) + dynamicBytes(
+    ref)))
+}
+
+function domainHash(name, version, chainId, token) {
+  // EIP-712 hashes strings before placing them in the fixed-width domain tuple.
+  const type = kh(E.encode("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"));
+  return kh(bytes(word(type) + word(kh(E.encode(name))) + word(kh(E.encode(version))) + word(chainId) + addressWord(
+    token)))
+}
+
+function encodePay(q, from, validAfter, validBefore, v, r, s) {
+  const tail = dynamicBytes(q.ref);
+  return "0x" + SEL.pay + word(q.id) + addressWord(q.token) + addressWord(from) + addressWord(q.to) + word(q.units) +
+    word(352) + word(validAfter) + word(validBefore) + word(v) + word(r) + word(s) + tail
+}
+
+function encodePayBytes(q, from, validAfter, validBefore, signature) {
+  const refTail = dynamicBytes(q.ref),
+    signatureTail = dynamicBytes(bytes(signature));
+  return "0x" + SEL.payBytes + word(q.id) + addressWord(q.token) + addressWord(from) + addressWord(q.to) +
+    word(q.units) + word(288) + word(validAfter) + word(validBefore) + word(288 + refTail.length / 2) + refTail +
+    signatureTail
+}
+
+function encodePaid(q) {
+  return "0x" + SEL.paid + word(q.id) + addressWord(q.token) + addressWord(q.to) + word(q.units) + word(160) +
+    dynamicBytes(q.ref)
+}
+
+function encodeMemo(target, data, id, memoData) {
+  const a = bytes(data),
+    m = E.encode(memoData),
+    ad = dynamicBytes(a),
+    md = dynamicBytes(m);
+  return "0x" + SEL.memo + addressWord(target) + word(128) + word(id) + word(128 + ad.length / 2) + ad + md
+}
+
+function decodeString(result) {
+  const h = result.slice(2),
+    off = Number(BigInt("0x" + h.slice(0, 64))) * 2,
+    len = Number(BigInt("0x" + h.slice(off, off + 64)));
+  return D.decode(bytes(h.slice(off + 64, off + 64 + len * 2)))
+}
+
+async function rpc(net, method, rpcParams) {
+  const res = await fetch(net.rpc, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: Date.now(),
+      method,
+      params: rpcParams
+    })
+  });
+  if (!res.ok) throw Error("RPC HTTP " + res.status);
+  const j = await res.json();
+  if (j.error) throw Error(j.error.message || "RPC error");
+  return j.result
+}
+
+function readError(e) {
+  if (e && (e.code === 4001 || e.code === "ACTION_REJECTED")) return tr("rejected");
+  return e && e.message ? e.message : "Unexpected error"
+}
+
+function rejected(e) {
+  return !!(e && (e.code === 4001 || e.code === "ACTION_REJECTED"))
+}
+async function ensureNetwork(p, n) {
+  try {
+    await p.request({
+      method: "wallet_switchEthereumChain",
+      params: [{
+        chainId: n.chainIdHex
+      }]
+    })
+  } catch (e) {
+    const unknown = e && (e.code === 4902 || (e.data && e.data.originalError && e.data.originalError.code === 4902));
+    if (!unknown) throw e;
+    await p.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+        chainId: n.chainIdHex,
+        chainName: n.name,
+        nativeCurrency: {
+          name: "USDC",
+          symbol: "USDC",
+          decimals: 18
+        },
+        rpcUrls: [n.rpc],
+        blockExplorerUrls: [n.explorer]
+      }]
+    });
+    await p.request({
+      method: "wallet_switchEthereumChain",
+      params: [{
+        chainId: n.chainIdHex
+      }]
+    })
+  }
+}
+async function tokenIdentity(provider, q) {
+  const call = async data => provider.request({
+    method: "eth_call",
+    params: [{
+      to: q.token,
+      data
+    }, "latest"]
+  });
+  const [nameRaw, versionRaw, onchain] = await Promise.all([call("0x" + SEL.name), call("0x" + SEL.version), call(
+    "0x" + SEL.domain)]);
+  const name = decodeString(nameRaw),
+    version = decodeString(versionRaw),
+    expected = domainHash(name, version, q.net.chainId, q.token);
+  if (expected.toLowerCase() !== onchain.toLowerCase()) throw Error(tr("domainMismatch"));
+  return {
+    name,
+    version
+  }
+}
+
+async function verifyPayLink(provider, q) {
+  const code = await provider.request({
+    method: "eth_getCode",
+    params: [q.net.payLink, "latest"]
+  });
+  if (!code || code === "0x") throw Error(tr("contractMismatch"));
+  const readAddress = async selector => {
+    const result = await provider.request({
+      method: "eth_call",
+      params: [{
+        to: q.net.payLink,
+        data: "0x" + selector
+      }, "latest"]
+    });
+    return "0x" + result.slice(-40)
+  };
+  const [usdc, eurc] = await Promise.all([readAddress(SEL.usdc), readAddress(SEL.eurc)]);
+  if (usdc.toLowerCase() !== q.net.tokens.USDC.toLowerCase() ||
+    eurc.toLowerCase() !== q.net.tokens.EURC.toLowerCase()) throw Error(tr("contractMismatch"))
+}
+
+function splitSignature(sig) {
+  if (!/^0x[0-9a-f]{130}$/i.test(sig)) throw Error("Invalid signature");
+  let v = parseInt(sig.slice(130, 132), 16);
+  if (v < 27) v += 27;
+  return {
+    r: "0x" + sig.slice(2, 66),
+    s: "0x" + sig.slice(66, 130),
+    v
+  }
+}
+async function preparePayment() {
+  if (await checkStatus(true)) return null;
+  if (!window.ethereum || typeof ethereum.request !== "function") throw Error(tr("walletNeeded"));
+  msg($("payment-status"), tr("connect"), "info");
+  const accounts = await ethereum.request({
+    method: "eth_requestAccounts"
+  });
+  const from = accounts && accounts[0];
+  if (!isAddress(from)) throw Error("Invalid wallet account");
+  await ensureNetwork(ethereum, request.net);
+  const payerCode = await ethereum.request({
+      method: "eth_getCode",
+      params: [from, "latest"]
+    }),
+    directOnly = !!payerCode && payerCode !== "0x" && !payerCode.toLowerCase().startsWith("0xef0100");
+  $("wallet-notice").hidden = !directOnly;
+  $("wallet-notice").textContent = directOnly ? tr("smartWalletDirect") : "";
+  msg($("payment-status"), tr("tokenCheck"), "info");
+  await verifyPayLink(ethereum, request);
+  const identity = await tokenIdentity(ethereum, request),
+    validAfter = 0,
+    validBefore = Math.floor(Date.now() / 1000) + 3600,
+    nonce = requestKey(request);
+  const typed = {
+    domain: {
+      name: identity.name,
+      version: identity.version,
+      chainId: request.net.chainId,
+      verifyingContract: request.token
+    },
+    primaryType: "ReceiveWithAuthorization",
+    types: {
+      EIP712Domain: [{
+        name: "name",
+        type: "string"
+      }, {
+        name: "version",
+        type: "string"
+      }, {
+        name: "chainId",
+        type: "uint256"
+      }, {
+        name: "verifyingContract",
+        type: "address"
+      }],
+      ReceiveWithAuthorization: [{
+        name: "from",
+        type: "address"
+      }, {
+        name: "to",
+        type: "address"
+      }, {
+        name: "value",
+        type: "uint256"
+      }, {
+        name: "validAfter",
+        type: "uint256"
+      }, {
+        name: "validBefore",
+        type: "uint256"
+      }, {
+        name: "nonce",
+        type: "bytes32"
+      }]
+    },
+    message: {
+      from,
+      to: request.net.payLink,
+      value: request.units.toString(),
+      validAfter: validAfter.toString(),
+      validBefore: validBefore.toString(),
+      nonce
+    }
+  };
+  msg($("payment-status"), tr("sign"), "info");
+  const signature = await ethereum.request({
+    method: "eth_signTypedData_v4",
+    params: [from, JSON.stringify(typed)]
+  });
+  if (!/^0x[0-9a-f]+$/i.test(signature) || signature.length % 2) throw Error("Invalid signature");
+  const call = signature.length === 132 ? (() => {
+    const parts = splitSignature(signature);
+    return encodePay(request, from, validAfter, validBefore, parts.v, parts.r, parts.s)
+  })() : encodePayBytes(request, from, validAfter, validBefore, signature);
+  return {
+    from,
+    call,
+    validBefore,
+    chainId: request.net.chainIdHex.toLowerCase(),
+    directOnly
+  }
+}
+async function sendPrepared(direct) {
+  if (pending) {
+    const chainId = String(await ethereum.request({method: "eth_chainId"})).toLowerCase();
+    if (pending.validBefore - Math.floor(Date.now() / 1000) <= 60 || chainId !== pending.chainId) pending = null
+  }
+  if (!pending) {
+    pending = await preparePayment();
+    if (!pending) return
+  }
+  direct = direct || pending.directOnly;
+  msg($("payment-status"), tr("confirm"), "info");
+  const data = direct ? pending.call : encodeMemo(request.net.payLink, pending.call, request.id, request.ref),
+    to = direct ? request.net.payLink : request.net.memo;
+  try {
+    const tx = await ethereum.request({
+      method: "eth_sendTransaction",
+      params: [{
+        from: pending.from,
+        to,
+        data
+      }]
+    });
+    if (!/^0x[0-9a-f]{64}$/i.test(tx)) throw Error("Invalid transaction hash");
+    $("direct-button").hidden = true;
+    showSubmitted(tx);
+    await pollReceipt(tx, !direct)
+  } catch (e) {
+    if (await completedAfterFailure()) return;
+    if (!direct && !rejected(e)) {
+      await offerDirect(e, false);
+      return
+    }
+    throw e
+  }
+}
+async function pay(direct) {
+  if (requestPaid || paymentInFlight) return;
+  paymentInFlight = true;
+  updatePayButtons();
+  try {
+    if (await checkStatus(true)) return;
+    await sendPrepared(direct)
+  } catch (e) {
+    if (!(await completedAfterFailure())) msg($("payment-status"), readError(e), "error");
+    if (rejected(e)) pending = null
+  } finally {
+    paymentInFlight = false;
+    updatePayButtons()
+  }
+}
+
+async function completedAfterFailure() {
+  if (!(await checkStatus(true))) return false;
+  msg($("payment-status"), tr("completedElsewhere"), "success");
+  return true
+}
+
+function updatePayButtons() {
+  $("pay-button").disabled = paymentInFlight || requestPaid;
+  $("direct-button").disabled = paymentInFlight || requestPaid
+}
+
+async function offerDirect(memoError, confirmedMemoFailure) {
+  try {
+    if (!confirmedMemoFailure) {
+      const memoCall = encodeMemo(request.net.payLink, pending.call, request.id, request.ref);
+      try {
+        await ethereum.request({
+          method: "eth_call",
+          params: [{from: pending.from, to: request.net.memo, data: memoCall}, "latest"]
+        });
+        if (!(await completedAfterFailure())) msg($("payment-status"), readError(memoError), "error");
+        return
+      } catch (error) {
+        console.warn(error)
+      }
+      if (await completedAfterFailure()) return;
+    }
+    await ethereum.request({
+      method: "eth_call",
+      params: [{
+        from: pending.from,
+        to: request.net.payLink,
+        data: pending.call
+      }, "latest"]
+    });
+    if (await completedAfterFailure()) return;
+    $("direct-button").hidden = false;
+    msg($("payment-status"), tr("memoFailed") + " " + readError(memoError), "notice")
+  } catch (directError) {
+    $("direct-button").hidden = true;
+    if (!(await completedAfterFailure())) {
+      msg($("payment-status"), tr("directFailed") + " " + readError(directError), "error")
+    }
+  }
+}
+
+function showSubmitted(tx) {
+  const box = $("payment-status");
+  box.textContent = tr("submitted") + " ";
+  box.className = "message success";
+  box.append(link(request.net.explorer + "/tx/" + tx, tr("viewTx")))
+}
+async function retryStatus(attempts) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    if (await checkStatus(true)) return true;
+    if (attempt + 1 < attempts) await new Promise(resolve => setTimeout(resolve, 500 + attempt * 550))
+  }
+  return false
+}
+
+async function pollReceipt(tx, wrapped) {
+  const id = ++pollId,
+    until = Date.now() + 120000;
+  while (Date.now() < until && id === pollId) {
+    try {
+      const r = await rpc(request.net, "eth_getTransactionReceipt", [tx]);
+      if (r) {
+        if (r.status === "0x0") {
+          if (await retryStatus(3)) {
+            msg($("payment-status"), tr("completedElsewhere"), "success");
+          } else if (wrapped) {
+            await offerDirect(Error(tr("failed")), true)
+          } else msg($("payment-status"), tr("failed"), "error");
+          return
+        }
+        const ok = await retryStatus(10);
+        msg($("payment-status"), ok ? tr("confirmed") : tr("noMatch"), ok ? "success" : "notice");
+        return
+      }
+    } catch (e) {
+      console.warn(e)
+    }
+    await new Promise(r => setTimeout(r, 2500))
+  }
+  if (id === pollId) {
+    showSubmitted(tx);
+    $("payment-status").insertBefore(document.createTextNode(tr("receiptTimeout") + " "), $("payment-status").firstChild)
+  }
+}
+
+function parsePaid(log) {
+  if (!log || log.topics.length < 4) throw Error("Malformed log");
+  const h = log.data.slice(2),
+    token = "0x" + h.slice(24, 64),
+    amount = BigInt("0x" + h.slice(64, 128)),
+    off = Number(BigInt("0x" + h.slice(128, 192))) * 2,
+    len = Number(BigInt("0x" + h.slice(off, off + 64))),
+    ref = D.decode(bytes(h.slice(off + 64, off + 64 + len * 2)));
+  return {
+    payer: "0x" + log.topics[2].slice(-40),
+    recipient: "0x" + log.topics[3].slice(-40),
+    token,
+    amount,
+    ref,
+    tx: log.transactionHash,
+    block: BigInt(log.blockNumber)
+  }
+}
+
+function link(href, text) {
+  const a = document.createElement("a");
+  a.href = href;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  a.textContent = text;
+  return a
+}
+
+function line(box, label, value) {
+  const d = document.createElement("div"),
+    b = document.createElement("strong");
+  b.textContent = label + ": ";
+  d.append(b, document.createTextNode(value));
+  box.append(d)
+}
+async function checkStatus(quiet = false) {
+  if (!request) return false;
+  if (request.net.payLink.toLowerCase() === ZERO) {
+    msg($("chain-status"), tr("unavailable"), "notice");
+    return false
+  }
+  $("status-button").disabled = true;
+  if (!quiet) msg($("chain-status"), tr("checking"), "info");
+  try {
+    const raw = await rpc(request.net, "eth_call", [{
+        to: request.net.payLink,
+        data: encodePaid(request)
+      }, "latest"]),
+      paid = BigInt(raw);
+    if (!paid) {
+      msg($("chain-status"), tr("unpaid"), "info");
+      return false
+    }
+    requestPaid = true;
+    updatePayButtons();
+    msg($("payment-status"), tr("alreadyPaid"), "success");
+    let logs = [];
+    try {
+      logs = await rpc(request.net, "eth_getLogs", [{
+        address: request.net.payLink,
+        fromBlock: quantity(paid),
+        toBlock: quantity(paid),
+        topics: [PAID_TOPIC, request.id]
+      }])
+    } catch (e) {
+      console.warn(e)
+    }
+    let found = null;
+    for (const l of logs) {
+      try {
+        const p = parsePaid(l);
+        if (p.recipient.toLowerCase() === request.to.toLowerCase() && p.token.toLowerCase() === request.token
+          .toLowerCase() && p.amount === request.units && p.ref === request.ref) {
+          found = p;
+          break
+        }
+      } catch (e) {
+        console.warn(e)
+      }
+    }
+    if (!found) {
+      renderStatePaid(paid);
+      return true
+    }
+    let time = null;
+    try {
+      const block = await rpc(request.net, "eth_getBlockByNumber", [quantity(paid), false]);
+      time = block ? new Date(Number(BigInt(block.timestamp)) * 1000) : null
+    } catch (e) {
+      console.warn(e)
+    }
+    renderPaid(found, time);
+    return true
+  } catch (e) {
+    if (!quiet) msg($("chain-status"), readError(e), "error");
+    return false
+  } finally {
+    $("status-button").disabled = false
+  }
+}
+
+function renderStatePaid(block) {
+  const box = $("chain-status");
+  box.textContent = "";
+  box.className = "message success";
+  const h = document.createElement("strong");
+  h.textContent = tr("statePaid");
+  box.append(h);
+  line(box, tr("amount"), amountText(request.units, request.currency));
+  line(box, tr("block"), block.toString());
+  box.append(link(request.net.explorer + "/block/" + block, tr("viewBlock")));
+  receipt = null;
+  $("receipt-actions").hidden = true
+}
+
+function renderPaid(p, time) {
+  const box = $("chain-status");
+  box.textContent = "";
+  box.className = "message success";
+  const h = document.createElement("strong");
+  h.textContent = tr("paid");
+  box.append(h);
+  if (p.payer) line(box, tr("payer"), p.payer);
+  line(box, tr("amount"), amountText(p.amount, request.currency));
+  line(box, tr("block"), p.block.toString());
+  if (time) line(box, tr("time"), new Intl.DateTimeFormat(lang === "es" ? "es-ES" : "en-US", {
+    dateStyle: "medium",
+    timeStyle: "medium"
+  }).format(time));
+  const links = document.createElement("div");
+  if (p.tx) links.append(link(request.net.explorer + "/tx/" + p.tx, tr("viewTx")), document.createTextNode(" · "));
+  links.append(link(request.net.explorer + "/block/" + p.block, tr("viewBlock")));
+  box.append(links);
+  receipt = {
+    request: request.id,
+    payer: p.payer || "",
+    transactionHash: p.tx || "",
+    block: p.block.toString(),
+    time: time ? time.toISOString() : "",
+    network: request.net.name,
+    token: request.token,
+    amount: normalized(request.amount),
+    currency: request.currency,
+    recipient: request.to,
+    reference: request.ref
+  };
+  $("receipt-actions").hidden = false
+}
+
+function download(kind) {
+  if (!receipt) return;
+  let body, type, name;
+  if (kind === "json") {
+    body = JSON.stringify(receipt, null, 2) + "\n";
+    type = "application/json";
+    name = "paylink-receipt.json"
+  } else {
+    const keys = Object.keys(receipt),
+      safe = v => {
+        v = String(v);
+        if (/^[=+\-@\t\r]/.test(v)) v = "'" + v;
+        return '"' + v.replace(/"/g, '""') + '"'
+      };
+    body = keys.map(safe).join(",") + "\r\n" + keys.map(k => safe(receipt[k])).join(",") + "\r\n";
+    type = "text/csv";
+    name = "paylink-receipt.csv"
+  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([body], {
+    type
+  }));
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 0)
+}
+
+// Byte-mode QR Code, error correction level M, versions 1 through 10.
+const QR_DATA = [16, 28, 44, 64, 86, 108, 124, 154, 182, 216],
+  QR_ECC = [10, 16, 26, 18, 24, 16, 18, 22, 22, 26],
+  QR_BLOCKS = [1, 1, 1, 2, 2, 4, 4, 4, 5, 5];
+
+function qrBits(data, version) {
+  const cap = QR_DATA[version - 1],
+    bits = [];
+  const add = (v, n) => {
+    for (let i = n - 1; i >= 0; i--) bits.push((v >>> i) & 1)
+  };
+  add(4, 4);
+  add(data.length, version < 10 ? 8 : 16);
+  for (const b of data) add(b, 8);
+  if (bits.length > cap * 8) throw Error(tr("qrLong"));
+  add(0, Math.min(4, cap * 8 - bits.length));
+  while (bits.length % 8) bits.push(0);
+  const out = [];
+  for (let i = 0; i < bits.length; i += 8) out.push(bits.slice(i, i + 8).reduce((a, b) => a * 2 + b, 0));
+  for (let p = 0; out.length < cap; p ^= 1) out.push(p ? 17 : 236);
+  return out
+}
+
+function gfMul(x, y) {
+  let z = 0;
+  for (let i = 7; i >= 0; i--) z = (z << 1) ^ ((z >>> 7) * 0x11d) ^ (((y >>> i) & 1) * x);
+  return z
+}
+
+function rs(data, degree) {
+  let div = [1];
+  for (let i = 0, root = 1; i < degree; i++, root = gfMul(root, 2)) {
+    const next = Array(div.length + 1).fill(0);
+    for (let j = 0; j < div.length; j++) {
+      next[j] ^= div[j];
+      next[j + 1] ^= gfMul(div[j], root)
+    }
+    div = next
+  }
+  const rem = Array(degree).fill(0);
+  for (const b of data) {
+    const f = b ^ rem.shift();
+    rem.push(0);
+    for (let i = 0; i < degree; i++) rem[i] ^= gfMul(div[i + 1], f)
+  }
+  return rem
+}
+
+function qrCodewords(data, v) {
+  const total = [26, 44, 70, 100, 134, 172, 196, 242, 292, 346][v - 1],
+    ec = QR_ECC[v - 1],
+    blocks = QR_BLOCKS[v - 1],
+    shortLen = Math.floor(total / blocks),
+    shortBlocks = blocks - total % blocks,
+    shortData = shortLen - ec,
+    parts = [],
+    ecc = [];
+  let k = 0;
+  for (let i = 0; i < blocks; i++) {
+    const n = shortData + (i >= shortBlocks ? 1 : 0);
+    parts.push(data.slice(k, k + n));
+    k += n;
+    ecc.push(rs(parts[i], ec))
+  }
+  const out = [];
+  for (let i = 0; i <= shortData; i++)
+    for (let j = 0; j < blocks; j++)
+      if (i < parts[j].length) out.push(parts[j][i]);
+  for (let i = 0; i < ec; i++)
+    for (let j = 0; j < blocks; j++) out.push(ecc[j][i]);
+  return out
+}
+
+function drawFinder(set, cx, cy) {
+  for (let dy = -4; dy <= 4; dy++)
+    for (let dx = -4; dx <= 4; dx++) {
+      const d = Math.max(Math.abs(dx), Math.abs(dy));
+      set(cx + dx, cy + dy, d !== 2 && d !== 4)
+    }
+}
+
+function drawQrPatterns(v, size, base, set) {
+  drawFinder(set, 3, 3);
+  drawFinder(set, size - 4, 3);
+  drawFinder(set, 3, size - 4);
+  for (let i = 0; i < size; i++) {
+    if (base[6][i] === null) set(i, 6, i % 2 === 0);
+    if (base[i][6] === null) set(6, i, i % 2 === 0)
+  }
+  const aligns = Math.floor(v / 7) + 2,
+    step = v === 1 ? 0 : (v === 32 ? 26 : Math.floor((v * 4 + aligns * 2 + 1) / (aligns * 2 - 2)) * 2),
+    pos = [];
+  for (let i = 0; i < aligns; i++) pos.push(i === 0 ? 6 : size - 7 - (aligns - 1 - i) * step);
+  if (v > 1)
+    for (const y of pos)
+      for (const x of pos) {
+        if (base[y][x] !== null) continue;
+        for (let dy = -2; dy <= 2; dy++)
+          for (let dx = -2; dx <= 2; dx++) {
+            set(x + dx, y + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1)
+          }
+      }
+  for (let i = 0; i < 15; i++) {
+    const a = i < 6 ? [8, i] : i < 8 ? [8, i + 1] : i === 8 ? [7, 8] : [14 - i, 8],
+      b = i < 8 ? [size - 1 - i, 8] : [8, size - 15 + i];
+    set(a[0], a[1], false);
+    set(b[0], b[1], false)
+  }
+  set(8, size - 8, true);
+  if (v >= 7) {
+    let rem = v;
+    for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1f25);
+    const val = (v << 12) | rem;
+    for (let i = 0; i < 18; i++) {
+      const bit = (val >>> i) & 1,
+        a = size - 11 + i % 3,
+        b = Math.floor(i / 3);
+      set(a, b, bit);
+      set(b, a, bit)
+    }
+  }
+}
+
+function makeQrBase(v) {
+  const size = v * 4 + 17;
+  const base = Array.from({ length: size }, () => Array(size).fill(null));
+  const func = Array.from({ length: size }, () => Array(size).fill(false));
+  const set = (x, y, val) => {
+    if (x >= 0 && y >= 0 && x < size && y < size) {
+      base[y][x] = !!val;
+      func[y][x] = true
+    }
+  };
+  drawQrPatterns(v, size, base, set);
+  return { base, func }
+}
+
+function qrDataBits(code) {
+  const bits = [];
+  for (const byte of code)
+    for (let i = 7; i >= 0; i--) bits.push((byte >>> i) & 1);
+  return bits
+}
+
+function qrCandidate(base, func, bits, mask) {
+  const matrix = base.map(row => row.slice());
+  const size = matrix.length;
+  let bit = 0;
+  let up = true;
+  for (let right = size - 1; right >= 1; right -= 2) {
+    if (right === 6) right--;
+    for (let vert = 0; vert < size; vert++) {
+      const y = up ? size - 1 - vert : vert;
+      for (let column = 0; column < 2; column++) {
+        const x = right - column;
+        if (!func[y][x]) {
+          matrix[y][x] = (bits[bit++] || 0) ^ maskBit(mask, x, y)
+        }
+      }
+    }
+    up = !up
+  }
+  drawFormat(matrix, mask);
+  return matrix
+}
+
+function qrVersion(byteLength) {
+  let version = 1;
+  while (version <= 10 && byteLength > QR_DATA[version - 1] - (version < 10 ? 2 : 3)) version++;
+  if (version > 10) throw Error(tr("qrLong"));
+  return version
+}
+
+function qrMatrix(text) {
+  const data = E.encode(text);
+  const version = qrVersion(data.length);
+  const bits = qrDataBits(qrCodewords(qrBits(data, version), version));
+  const { base, func } = makeQrBase(version);
+  let best = null;
+  let bestScore = Infinity;
+  // QR readers support eight masks; choose the one with the lowest visual penalty.
+  for (let mask = 0; mask < 8; mask++) {
+    const candidate = qrCandidate(base, func, bits, mask);
+    const score = penalty(candidate);
+    if (score < bestScore) {
+      bestScore = score;
+      best = candidate
+    }
+  }
+  return best
+}
+
+function maskBit(m, x, y) {
+  return [((x + y) % 2) === 0, (y % 2) === 0, (x % 3) === 0, ((x + y) % 3) === 0, ((Math.floor(y / 2) + Math.floor(x /
+    3)) % 2) === 0, ((x * y) % 2 + (x * y) % 3) === 0, ((((x * y) % 2) + ((x * y) % 3)) % 2) === 0, ((((x + y) %
+    2) + ((x * y) % 3)) % 2) === 0][m] ? 1 : 0
+}
+
+function drawFormat(m, mask) {
+  const n = m.length;
+  let data = mask,
+    rem = data;
+  for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
+  const bits = ((data << 10) | rem) ^ 0x5412;
+  for (let i = 0; i < 15; i++) {
+    const bit = ((bits >>> i) & 1) !== 0,
+      a = i < 6 ? [8, i] : i < 8 ? [8, i + 1] : i === 8 ? [7, 8] : [14 - i, 8],
+      b = i < 8 ? [n - 1 - i, 8] : [8, n - 15 + i];
+    m[a[1]][a[0]] = bit;
+    m[b[1]][b[0]] = bit
+  }
+  m[n - 8][8] = true
+}
+
+function penalty(m) {
+  const n = m.length;
+  let p = 0;
+  for (let y = 0; y < n; y++)
+    for (let x = 0; x < n; x++) {
+      const c = m[y][x];
+      if (x >= 5 && m[y].slice(x - 5, x + 1).every(v => v === c)) p += x === 5 || m[y][x - 6] !== c ? 3 : 1;
+      if (y >= 5 && [0, 1, 2, 3, 4, 5].every(i => m[y - i][x] === c)) p += y === 5 || m[y - 6][x] !== c ? 3 : 1;
+      if (x && y && c === m[y][x - 1] && c === m[y - 1][x] && c === m[y - 1][x - 1]) p += 3
+    }
+  const pattern = a => a.join("").includes("10111010000") || a.join("").includes("00001011101");
+  for (let i = 0; i < n; i++) {
+    if (pattern(m[i])) p += 40;
+    if (pattern(m.map(r => r[i]))) p += 40
+  }
+  const dark = m.flat().filter(Boolean).length;
+  p += Math.floor(Math.abs(dark * 20 - n * n * 10) / (n * n)) * 10;
+  return p
+}
+
+function drawQr(text) {
+  const m = qrMatrix(text),
+    canvas = $("qr"),
+    quiet = 4,
+    scale = 8,
+    size = m.length + quiet * 2;
+  canvas.width = canvas.height = size * scale;
+  const c = canvas.getContext("2d");
+  c.fillStyle = "#fff";
+  c.fillRect(0, 0, canvas.width, canvas.height);
+  c.fillStyle = "#000";
+  for (let y = 0; y < m.length; y++)
+    for (let x = 0; x < m.length; x++)
+      if (m[y][x]) c.fillRect((x + quiet) * scale, (y + quiet) * scale, scale, scale)
+}
+
+function updateAmountLabel() {
+  if (!$("amount-label")) return;
+  const c = $("currency").value || request && request.currency || "USDC";
+  $("amount-label").textContent = tr("amount") + " (" + (c === "EURC" ? "€ EURC" : "$ USDC") + ")"
+}
+
+function makeUrl(values) {
+  const u = new URL(location.href);
+  u.search = "";
+  u.hash = "";
+  u.searchParams.set("ref", values.ref);
+  u.searchParams.set("id", values.id);
+  u.searchParams.set("to", values.to);
+  u.searchParams.set("amt", values.amount);
+  u.searchParams.set("cur", values.currency);
+  if (values.network === "testnet") u.searchParams.set("net", "testnet");
+  return u
+}
+
+function testnetEnabled() {
+  return params.get("net") === "testnet" && isNonZero(CONFIG.testnet.payLink)
+}
+
+function supportedNetworkKey() {
+  const requested = params.get("net");
+  if (!requested || requested === "mainnet") return "mainnet";
+  if (requested === "testnet" && isNonZero(CONFIG.testnet.payLink)) return "testnet";
+  return null
+}
+
+function showCreate() {
+  $("create-section").hidden = false;
+  $("request-section").hidden = true;
+  if (testnetEnabled()) {
+    const option = document.createElement("option");
+    option.value = "testnet";
+    option.textContent = "Arc Testnet";
+    $("network").append(option);
+    $("network").value = "testnet";
+    $("test-banner").hidden = false
+  } else $("network").value = "mainnet";
+  $("currency").addEventListener("change", updateAmountLabel);
+  const updateAmountPreview = () => {
+    const raw = $("amount").value.trim();
+    if (!raw) {
+      $("amount-preview").textContent = "";
+      return
+    }
+    try {
+      const units = parseCreateAmount(raw);
+      $("amount-preview").textContent = tr("interpretedAmount").replace("{amount}", amountText(units, $("currency").value))
+    } catch (error) {
+      $("amount-preview").textContent = readError(error)
+    }
+  };
+  $("amount").addEventListener("input", updateAmountPreview);
+  $("currency").addEventListener("change", updateAmountPreview);
+  updateAmountLabel();
+  $("reference").addEventListener("input", () => {
+    const n = utf8Length($("reference").value);
+    $("ref-counter").textContent = n + " / 140 UTF-8 bytes";
+    $("reference").setCustomValidity(n > 140 ? tr("invalidRef") : "")
+  });
+  $("create-form").addEventListener("submit", e => {
+    e.preventDefault();
+    $("link-result").hidden = true;
+    try {
+      const to = $("recipient").value.trim(),
+        raw = $("amount").value.trim(),
+        ref = $("reference").value,
+        currency = $("currency").value;
+      const net = CONFIG[$("network").value];
+      if (invalidRecipient(to, net)) throw Error(tr("invalidAddress"));
+      const units = parseCreateAmount(raw);
+      if (utf8Length(ref) > 140) throw Error(tr("invalidRef"));
+      const u = makeUrl({
+        id: randomId(),
+        to,
+        amount: normalized(raw),
+        currency,
+        ref,
+        network: $("network").value
+      });
+      $("generated-link").value = $("open-request").href = u.toString();
+      $("link-result").hidden = false;
+      msg($("create-status"), tr("created") + " " + tr("interpretedAmount").replace("{amount}",
+        amountText(units, currency)), "success");
+      try {
+        drawQr(u.toString());
+        $("qr-status").textContent = ""
+      } catch (err) {
+        $("qr").width = $("qr").height = 0;
+        $("qr-status").textContent = readError(err)
+      }
+    } catch (err) {
+      msg($("create-status"), readError(err), "error")
+    }
+  });
+  $("copy-button").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText($("generated-link").value);
+      msg($("copy-status"), tr("copied"), "success")
+    } catch (e) {
+      $("generated-link").select();
+      msg($("copy-status"), tr("copyManual"), "notice")
+    }
+  })
+}
+
+function invalid(text) {
+  $("create-section").hidden = true;
+  $("request-section").hidden = false;
+  $("invalid-request").hidden = false;
+  $("request-content").hidden = true;
+  $("invalid-message").textContent = text
+}
+
+function loadRequest() {
+  const key = supportedNetworkKey();
+  if (!key) return invalid(tr("unsupportedNetwork"));
+  const net = CONFIG[key],
+    id = params.get("id") || "",
+    to = params.get("to") || "",
+    amount = params.get("amt") || "",
+    currency = params.get("cur") || "USDC",
+    ref = params.get("ref") || params.get("memo") || "";
+  if (!isId(id)) return invalid(tr("invalidId"));
+  if (invalidRecipient(to, net)) return invalid(tr("invalidAddress"));
+  if (!["USDC", "EURC"].includes(currency)) return invalid(tr("invalidCurrency"));
+  let units;
+  try {
+    units = parseAmount(amount)
+  } catch (e) {
+    return invalid(tr("invalidAmount"))
+  }
+  if (utf8Length(ref) > 140) return invalid(tr("invalidRef"));
+  request = {
+    id,
+    to,
+    amount: normalized(amount),
+    units,
+    currency,
+    ref,
+    net,
+    key,
+    token: net.tokens[currency]
+  };
+  $("create-section").hidden = true;
+  $("request-section").hidden = false;
+  $("request-content").hidden = false;
+  $("test-banner").hidden = key !== "testnet";
+  renderRequest();
+  if (net.payLink.toLowerCase() === ZERO) {
+    $("deployment-notice").hidden = false;
+    $("deployment-notice").textContent = tr("notDeployed");
+    $("pay-button").disabled = true
+  }
+  $("pay-button").addEventListener("click", () => pay(false));
+  $("direct-button").addEventListener("click", () => pay(true));
+  $("status-button").addEventListener("click", () => checkStatus());
+  checkStatus()
+}
+
+function renderRequest() {
+  if (!request) return;
+  document.title = amountText(request.units, request.currency) + " — PayLink";
+  $("request-amount").textContent = amountText(request.units, request.currency);
+  $("request-recipient").textContent = request.to;
+  $("request-reference").textContent = request.ref || tr("noRef");
+  $("request-network").textContent = request.net.name
+}
+
+function selfTest() {
+  const q = {
+    id: "0x" + "11".repeat(32),
+    token: "0x" + "22".repeat(20),
+    to: "0x" + "33".repeat(20),
+    units: 12500000n,
+    ref: "INV-1"
+  }, u = makeUrl({
+      id: q.id,
+      to: q.to,
+      amount: "12.5",
+      currency: "EURC",
+      ref: "Factura 7",
+      network: "testnet"
+    }),
+    round = new URL(u),
+    tests = [
+      ["Keccak empty vector", () => kh(new Uint8Array()) === "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"],
+      ["Exact 6-decimal amounts and decimal comma", () => parseAmount("1") === 1000000n &&
+        parseAmount("12,5") === 12500000n && parseAmount("0.000001") === 1n],
+      ["Ambiguous thousands separators rejected on create", () => createAmountRejected("1,000") &&
+        createAmountRejected("1.000")],
+      ["EIP-55 mixed-case addresses", () => isAddress("0x5294E9927c3306DcBaDb03fe70b92e01cCede505") &&
+        !isAddress("0x5294e9927c3306DcBaDb03fe70b92e01cCede505") &&
+        isAddress("0x5294e9927c3306dcbadb03fe70b92e01ccede505")],
+      ["paidBlock ABI selector", () => encodePaid(q).startsWith("0x969d7b90" + "11".repeat(32) +
+        "0".repeat(24) + "22".repeat(20))],
+      ["EOA pay selector 0x9030ea09", () => encodePay(q, "0x" + "44".repeat(20), 0, 99, 27,
+        "0x" + "55".repeat(32), "0x" + "66".repeat(32)).slice(0, 10) === "0x9030ea09"],
+      ["Bytes pay selector 0xb7fd0945", () => encodePayBytes(q, "0x" + "44".repeat(20), 0, 99,
+        "0xdeadbeef").slice(0, 10) === "0xb7fd0945" && SEL.receiveBytes === "88b7ab63"],
+      ["Shared request-key vector", () => requestKey(q) ===
+        "0x968673589daf1dd67c13c22673b29dac35f7f42cfb1bd35bf6523c7c1428e4dd"],
+      ["EIP-712 domain vector", () => domainHash("USDC", "2", 5042002,
+        "0x3600000000000000000000000000000000000000") ===
+        "0x361191522483d32a83e70ae7183b4b9629442c13a78bc9921d6f707911c8c6b0"],
+      ["Link round trip with reference first", () => round.search.slice(1).startsWith("ref=") &&
+        round.searchParams.get("cur") === "EURC" && round.searchParams.get("ref") === "Factura 7" &&
+        round.searchParams.get("id") === q.id && round.searchParams.get("amt") === "12.5"],
+      ["QR known vectors", () => {
+        const qa = qrMatrix("A"), qh = qrMatrix("HELLO WORLD");
+        return qa.length === 21 && qa.flat().filter(Boolean).length === 212 &&
+          qh.length === 21 && qh.flat().filter(Boolean).length === 228
+      }]
+    ], results = tests.map(([name, test]) => {
+      try {
+        return {name, passed: !!test()}
+      } catch (error) {
+        return {name, passed: false, error: readError(error)}
+      }
+    });
+  $("debug-section").hidden = false;
+  const passed = results.every(result => result.passed);
+  $("debug-results").textContent = (passed ? "PayLink self-tests passed\n" : "") +
+    results.map(result => (result.passed ? "PASS " : "FAIL ") + result.name +
+      (result.error ? ": " + result.error : "")).join("\n");
+  if (passed) console.log("PayLink self-tests passed.");
+  else console.error("Self-test failed: " + results.filter(result => !result.passed).map(result => result.name).join(", "))
+}
+
+$("language").addEventListener("change", e => {
+  lang = e.target.value;
+  translate()
+});
+$("csv-button").addEventListener("click", () => download("csv"));
+$("json-button").addEventListener("click", () => download("json"));
+translate();
+const active = testnetEnabled() ? CONFIG.testnet : CONFIG.mainnet;
+$("contract-link").href = isNonZero(active.payLink) ?
+  "https://repo.sourcify.dev/" + active.chainId + "/" + active.payLink : "#";
+$("contract-link").textContent = "Contract " + active.payLink;
+$("contract-link").target = "_blank";
+$("contract-link").rel = "noopener noreferrer";
+if (params.get("debug") === "1") selfTest();
+params.has("id") ? loadRequest() : showCreate();
+  </script>
+</body>
+</html>
